@@ -1,10 +1,15 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-let Button: FC<any> = (props) => {
+interface ButtonInterface {
+    label: string;
+    onClick: Function;
+}
+
+let Button: FC<ButtonInterface> = (props) => {
     return (
-        <Btn>
-            {props.children}
+        <Btn onClick={()=>props.onClick()}>
+            {props.label}
         </Btn>
     )
 }

@@ -3,13 +3,18 @@ import styled from 'styled-components';
 
 interface TextInputInterface {
     containerStyle?: CSSProperties;
+    placeholder: string;
+    onChange: Function;
 }
 
 let TextInput: FC<TextInputInterface> = (props) => {
     return (
         <Container style={{...props.containerStyle}}>
             <Input
-                placeholder="Username"
+                placeholder={props.placeholder}
+                onChange={(event)=>{
+                    props.onChange(event.target.value)
+                }}
             />
         </Container>
     )

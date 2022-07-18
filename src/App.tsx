@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import "@fontsource/poppins"
 import InitialCard from './InitialCard';
+import ChatUI from './ChatUI';
 
 function App() {
+
+  let [page, setPage] = useState<string>("login");
+
   return (
     <PageContainer >
-      <InitialCard/>
+      {page==="login"&&<InitialCard changeComponent={()=>setPage("chat")}/>}
+      {page==="chat"&&<ChatUI/>}
     </PageContainer>
   );
 }

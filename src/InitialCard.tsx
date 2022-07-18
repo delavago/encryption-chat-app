@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import ApiService from './api';
 import Button from './components/Button';
 import TextInput from './components/TextInput';
+import { User } from './types';
 
-let InitialCard = () => {
+let InitialCard = (props: {changeComponent: Function}) => {
+
+    let [fName, setFName] = useState<string>("");
+    let [lName, setLName] = useState<string>("");
+    let [email, setEmail] = useState<string>("");
+    let [password, setPassword] = useState<string>("");
+
+    let triggerLogin = () => {
+        let apiservice = new ApiService();
+
+        apiservice.loginRequest({Email: email, Password: password})
+        .then((response: User)=> {
+            sessionStorage.setItem("token", response.Token);
+            sessionStorage.setItem("firstName", response.FirstName);
+            sessionStorage.setItem("lastName", response.LastName);
+            props.changeComponent()
+        });
+    }
+
     return (
         <CardContainer>
             <CardSection style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -11,11 +31,30 @@ let InitialCard = () => {
             </CardSection>
             <CardSection>
                 <Text style={{ fontSize: 32, fontWeight: 400, marginBottom: 40, textAlign: 'center' }}>Welcome!</Text>
-                <Text style={{ fontSize: 18, fontWeight: 400, color: '#202221' }}>Enter a Username:</Text>
+                {/* <TextInput
+                    containerStyle={{marginBottom: 15}}
+                    placeholder="First Name"
+                    onChange={(val: string)=>setFName(val)}
+                />
                 <TextInput
                     containerStyle={{marginBottom: 15}}
+                    placeholder="Last Name"
+                    onChange={(val: string)=>setLName(val)}
+                /> */}
+                <TextInput
+                    containerStyle={{marginBottom: 15}}
+                    placeholder="Email"
+                    onChange={(val: string)=>setEmail(val)}
                 />
-                <Button>Enter</Button>
+                <TextInput
+                    containerStyle={{marginBottom: 15}}
+                    placeholder="Password"
+                    onChange={(val: string)=>setPassword(val)}
+                />
+                <Button
+                    label="Enter"
+                    onClick={()=> triggerLogin()}
+                />
             </CardSection>
         </CardContainer>
     )
